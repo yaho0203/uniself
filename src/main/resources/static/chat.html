@@ -1,35 +1,30 @@
-// === chat.html (resources/static/chat.html) ===
-<!-- WebSocket 기반 익명 채팅 테스트 클라이언트 -->
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>익명 채팅</title>
-</head>
-<body>
-    <h2>익명 채팅방</h2>
-    <!-- 닉네임 입력 제거 -->
-    <div style="height: 300px; overflow-y: scroll; border: 1px solid gray; padding: 10px;" id="chatBox"></div>
-    <br>
-    <input type="text" id="message" placeholder="메시지 입력" />
-    <button onclick="sendMessage()">전송</button>
+// === ChatMessage_hs.java ===
+// 채팅 메시지 정보를 저장하는 JPA 엔티티
+package com.example.location_app.entity;
 
-    <script>
-        let socket = new WebSocket("ws://localhost:8080/ws/chat");
+import jakarta.persistence.*;
+import lombok.*;
 
-        socket.onmessage = function(event) {
-            const chatBox = document.getElementById("chatBox");
-            chatBox.innerHTML += `<div>${event.data}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+import java.time.LocalDateTime;
 
-        function sendMessage() {
-            const message = document.getElementById("message").value;
-            if (message) {
-                socket.send(message);
-                document.getElementById("message").value = "";
-            }
-        }
-    </script>
-</body>
-</html>
+@Entity
+@Table(name = "chat_messages")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ChatMessage_hs {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // 메시지 ID
+
+    @Column(nullable = false)
+    private String senderNickname; // 보낸 사람 닉네임
+
+    @Column(nullable = false)
+    private String content; // 메시지 내용
+
+    @Column(nullable = false)
+    private LocalDateTime sentAt; // 보낸 시간
+}

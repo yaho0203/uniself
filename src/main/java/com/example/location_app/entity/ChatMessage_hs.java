@@ -1,26 +1,30 @@
 // === ChatMessage_hs.java ===
+// 채팅 메시지 정보를 저장하는 JPA 엔티티
 package com.example.location_app.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
-// DB에 저장될 채팅 메시지 엔티티
 @Entity
 @Table(name = "chat_messages")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChatMessage_hs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 메시지 ID
 
     @Column(nullable = false)
-    private String sender; // 사용자 닉네임
+    private String senderNickname; // 보낸 사람 닉네임
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String message; // 메시지 본문
+    @Column(nullable = false)
+    private String content; // 메시지 내용
 
-    @Column(name = "sent_at")
-    private LocalDateTime sentAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime sentAt; // 보낸 시간
 }
